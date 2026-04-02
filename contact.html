@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Page</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="contact.css" />
+</head>
+<body>
+  <header class="top-header">
+    <h2>Ardha Sainik Canteen</h2>
+    <nav id="nav-menu">
+      <a href="./index.html" aria-label="Home" title="Home"><i class="fa-solid fa-house"></i><span class="sr-only">Home</span></a>
+      <a href="./about.html" aria-label="About" title="About"><i class="fa-solid fa-circle-info"></i><span class="sr-only">About</span></a>
+      <a href="./products.html" aria-label="Products" title="Products"><i class="fa-solid fa-box-open"></i><span class="sr-only">Products</span></a>
+      <a href="./contact.html" aria-label="Contact" title="Contact"><i class="fa-solid fa-address-book"></i><span class="sr-only">Contact</span></a>
+    </nav>
+  </header>
+
+  <main class="contact-page">
+    <h1 class="page-title">Contact Dashboard</h1>
+    <p class="page-subtitle">3 sections: My Details, Receiver Details, and Location</p>
+
+    <section class="contact-wrapper">
+      <article class="panel my-details">
+      <h1>My Contact Details</h1>
+      <p>
+        Yahan aap apni details show kar sakti ho. Jo details aap change karna chahe,
+        bas niche values update kar dena.
+      </p>
+
+      <div class="detail-list">
+        <div class="detail-item">
+          <span class="label">Name</span>
+          <span class="value">Kunti yadav</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Phone</span>
+          <span class="value">+91 98765 43210</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Email</span>
+          <span class="value">kunti.delivery@gmail.com</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Address</span>
+          <span class="value">22, Main Market, Jaipur, Rajasthan</span>
+        </div>
+      </div>
+      </article>
+
+      <article class="panel form-section">
+      <h2>Fill Other Person Details</h2>
+      <p class="subtext">Yahan aap dusre person ki information fill kar sakti ho.</p>
+
+      <form class="contact-form" id="receiverForm">
+        <div class="field-grid">
+          <div class="input-wrap">
+            <label for="otherName">Full Name</label>
+            <input id="otherName" type="text" placeholder="Enter full name" required />
+          </div>
+          <div class="input-wrap">
+            <label for="otherPhone">Phone Number</label>
+            <input id="otherPhone" type="tel" pattern="[0-9]{10}" placeholder="Enter 10 digit number" required />
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <div class="input-wrap">
+            <label for="otherEmail">Email Address</label>
+            <input id="otherEmail" type="email" placeholder="Enter email" />
+          </div>
+          <div class="input-wrap">
+            <label for="city">City</label>
+            <input id="city" type="text" placeholder="Enter city" required />
+          </div>
+        </div>
+
+        <div class="input-wrap">
+          <label for="location">Location / Full Address</label>
+          <textarea id="location" placeholder="House no, street, landmark, area..." required></textarea>
+        </div>
+
+        <button class="submit-btn" type="submit">Submit Details</button>
+      </form>
+      <p id="submitStatus" class="submit-status" aria-live="polite"></p>
+      </article>
+
+      <article class="panel location-panel">
+        <h2>Location</h2>
+        <p class="subtext">Fixed location: Bus Stand, Jashpur</p>
+        <div class="location-box">
+          <iframe
+            title="Location Map"
+            src="https://maps.google.com/maps?q=Bus%20Stand%20Jashpur&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            loading="lazy">
+          </iframe>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    function setActiveNav() {
+      const currentFile = window.location.pathname.split("/").pop() || "index.html";
+      const navLinks = document.querySelectorAll("#nav-menu a");
+
+      navLinks.forEach((link) => {
+        const hrefFile = (link.getAttribute("href") || "").replace("./", "");
+        if (hrefFile === currentFile) {
+          link.classList.add("active");
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.classList.remove("active");
+          link.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    setActiveNav();
+
+    const receiverForm = document.getElementById("receiverForm");
+    const submitStatus = document.getElementById("submitStatus");
+
+    receiverForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      if (!receiverForm.checkValidity()) {
+        submitStatus.textContent = "Please fill all required fields correctly.";
+        submitStatus.className = "submit-status error";
+        receiverForm.reportValidity();
+        return;
+      }
+
+      submitStatus.textContent = "Details submitted successfully.";
+      submitStatus.className = "submit-status success";
+      receiverForm.reset();
+    });
+  </script>
+</body>
+</html>

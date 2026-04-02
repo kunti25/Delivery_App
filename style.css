@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial;
+}
+
+
+
+/* Navbar */
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 60px;
+  background: #f5c84c;
+}
+
+nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  /* padding: 100px; */
+}
+
+.hero h1 {
+  font-size: 50px;
+  display: inline-block;
+}
+
+.hero span {
+  color: green;
+}
+
+/* Pages */
+.page {
+  text-align: center;
+  padding: 100px;
+}
+
+video {
+  box-shadow: 5px 5px 10px red;
+}
