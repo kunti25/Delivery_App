@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management | Quick Mart</title>
+    <style>
+       
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 700px; margin: auto; }
+        h2 { text-align: center; color: #1c8d3b; margin-bottom: 30px; text-transform: uppercase; }
+        .back-btn { display: inline-block; background: #1c8d3b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 50px; font-weight: bold; margin-bottom: 20px; }
+        
+        .order-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 8px solid #1c8d3b; position: relative; }
+        .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+        .customer-details { background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px dashed #ccc; font-size: 14px; }
+        .item-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 15px; border-bottom: 1px inset #f1f1f1; }
+        .total-section { border-top: 2px solid #eee; margin-top: 15px; padding-top: 12px; display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: #1c8d3b; }
+
+     
+        .action-area { display: flex; gap: 10px; margin-top: 20px; }
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; color: white; }
+        .btn-done { background: #1c8d3b; }
+        .btn-done:hover { background: #146c2d; }
+        .btn-fail { background: #d93025; }
+        .btn-fail:hover { background: #b71c1c; }
+        
+        .status-badge { font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: bold; text-transform: uppercase; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-delivered { background: #d4edda; color: #155724; }
+        .status-failed { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-btn">← Continue Shopping</a>
+    <h2>Order Management</h2>
+    <div id="orders-display-area"></div>
+</div>
+
+<script>
+    function displayAllOrders() {
+        const displayArea = document.getElementById('orders-display-area');
+
+        let savedOrders = JSON.parse(localStorage.getItem('myOrders')) || [];
+
+        if (savedOrders.length === 0) {
+            displayArea.innerHTML = `<div style="text-align:center; padding:50px; color:#666;"><h3>No orders found!</h3></div>`;
+            return;
+        }
+
+       
+        const htmlContent = savedOrders.slice().reverse().map((order, index) => {
+         
+            const actualIndex = savedOrders.length - 1 - index;
+     
+            let statusHTML = "";
+
+            if (order.status === "Delivered") {
+                statusHTML = `<span style="color: #1c8d3b; font-weight: bold; font-size: 16px;">✅ Order Delivered</span>`;
+            } else if (order.status === "Cancelled") {
+                statusHTML = `<span style="color: #d9534f; font-weight: bold; font-size: 16px;">❌ Order Cancelled</span>`;
+            } else {
+          
+                statusHTML = `
+                    <div id="btn-group-${actualIndex}">
+                        <button onclick="updateOrderStatus(${actualIndex}, 'Delivered')" 
+                                style="background:#1c8d3b; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:bold; margin-right:8px;">
+                                Done
+                        </button>
+                        <button onclick="updateOrderStatus(${actualIndex}, 'Cancelled')" 
+                                style="background:#d9534f; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:bold;">
+                                Cancel
+                        </button>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="order-card" style="background:white; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 4px 10px rgba(0,0,0,0.1); border-left:8px solid ${order.status === 'Cancelled' ? '#d9534f' : '#1c8d3b'};">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:8px;">
+                        <span><strong>Order ID: ${order.orderId}</strong></span>
+                        <span style="font-size:12px; color:#777;">${order.date}</span>
+                    </div>
+
+                    <div style="background:#fcfcfc; padding:12px; border-radius:8px; margin-bottom:12px; font-size:14px; border:1px solid #efefef;">
+                        <p style="margin:2px 0;"><strong>Customer:</strong> ${order.customer.name}</p>
+                        <p style="margin:2px 0;"><strong>Phone:</strong> ${order.customer.phone}</p>
+                        <p style="margin:2px 0;"><strong>Address:</strong> ${order.customer.address}, ${order.customer.area}</p>
+                    </div>
+
+                    <div style="margin-bottom:12px;">
+                        ${order.items.map(item => `
+                            <div style="display:flex; justify-content:space-between; font-size:14px; padding:2px 0;">
+                                <span>${item.name} (x${item.qty})</span>
+                                <span>₹${item.price}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div style="border-top:2px solid #f4f4f4; padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
+                        <div id="action-area-${actualIndex}">
+                            ${statusHTML}
+                        </div>
+                        <div style="text-align:right;">
+                            <span style="display:block; font-size:12px; color:#888;">Grand Total</span>
+                            <strong style="font-size:20px; color:#333;">₹${order.total}</strong>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        displayArea.innerHTML = htmlContent;
+    }
+
+    function updateOrderStatus(index, newStatus) {
+        let savedOrders = JSON.parse(localStorage.getItem('myOrders')) || [];
+        
+     
+        savedOrders[index].status = newStatus;
+      
+        localStorage.setItem('myOrders', JSON.stringify(savedOrders));
+        
+        displayAllOrders();
+    }
+
+
+    window.onload = displayAllOrders;
+</script>
+</body>
+</html>

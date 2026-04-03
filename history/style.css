@@ -1,0 +1,52 @@
+body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+
+    #history {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px; 
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .order {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .order:hover {
+      transform: scale(1.03);
+    }
+
+    .order button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      margin-right: 8px;
+      font-size: 14px;
+    }
+
+    .reorder {
+      background: green;
+      color: white;
+    }
+
+    .delete {
+      background: red;
+      color: white;
+    }
