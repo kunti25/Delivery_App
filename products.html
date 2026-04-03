@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products | Ardha Sainik Canteen</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="./index.css" />
+</head>
+<body>
+  <header>
+    <h2>Ardha Sainik Canteen</h2>
+    <form class="header-search" role="search">
+      <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      <input type="search" placeholder="Search products..." aria-label="Search" />
+    </form>
+    <nav id="nav-menu">
+      <a href="./index.html" aria-label="Home" title="Home"><i class="fa-solid fa-house"></i><span class="sr-only">Home</span></a>
+      <a href="./about.html" aria-label="About" title="About"><i class="fa-solid fa-circle-info"></i><span class="sr-only">About</span></a>
+      <a href="./products.html" aria-label="Products" title="Products"><i class="fa-solid fa-box-open"></i><span class="sr-only">Products</span></a>
+      <a href="./contact.html" aria-label="Contact" title="Contact"><i class="fa-solid fa-address-book"></i><span class="sr-only">Contact</span></a>
+    </nav>
+  </header>
+
+  <main class="simple-page">
+    <section class="simple-card">
+      <h1>Products</h1>
+      <p>Yahan aapke products list aur delivery catalog show kiya ja sakta hai.</p>
+    </section>
+  </main>
+
+  <script>
+    function setActiveNav() {
+      const currentFile = window.location.pathname.split("/").pop() || "index.html";
+      const navLinks = document.querySelectorAll("#nav-menu a");
+
+      navLinks.forEach((link) => {
+        const hrefFile = (link.getAttribute("href") || "").replace("./", "");
+        if (hrefFile === currentFile) {
+          link.classList.add("active");
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.classList.remove("active");
+          link.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    setActiveNav();
+  </script>
+</body>
+</html>
